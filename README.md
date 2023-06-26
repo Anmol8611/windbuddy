@@ -19,7 +19,7 @@ A simple weather application built with ReactJS that provides current weather in
 
 ## Demo
 
-Include a link or GIF demonstrating the app's functionality. For example:
+Screenshot of the app
 
 ![Weather App Screenshot](./Windbuddy.png)
 
