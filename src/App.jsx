@@ -9,10 +9,13 @@ const App = () => {
   const [inputState, setInputState] = useState("Ranchi");
   const [searchState, setSearchState] = useState("Ranchi");
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentData, setCurrentData] = useState({});
+
   const apiKey = `3798b33e884811f9b8be4924f71b718b`;
   const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${searchState}&appid=${apiKey}`;
 
-  console.log(apiData);
+  // console.log(apiData);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,23 +46,79 @@ const App = () => {
   let day = d.getDate();
   let month = d.getMonth() + 1;
   let year = d.getFullYear();
+  const currentDate = `${day} / ${month} / ${year}`;
 
-  const hour = d.getHours();
-  const minutes = d.getMinutes();
-  // const seconds = d.getSeconds();
+  // method to get current time
 
-  const currentDate = `${day} / ${month} / ${year}`
-  const currentTime = `${hour} : ${minutes}`;
+  // const getCurrentTime = () => {
+  //   let hh = d.getHours();
+  //   let mm = d.getMinutes();
+  //   let ss = d.getSeconds();
+  //   let session = "AM";
 
-  // setInterval(() => {
-  //   setCurrentTime(`${hour} : ${minutes} : ${seconds}`);
-  // }, 1000);
+  //   if(hh == 0) {
+  //     hh = 12;
+  //   }
+  //   if ( hh > 12 ) {
+  //     hh = hh - 12;
+  //     session = "PM";
+  //   }
+
+  //   hh = (hh < 10) ? "0" + hh : hh;
+  //   mm = (mm < 10) ? "0" + mm : mm;
+  //   ss = (ss < 10) ? "0" + ss : ss;
+
+  //   setCurrentTime(() => {
+  //     currentTime();
+  //   }, 1000);
+
+  //   setInterval(() => {
+  //     setCurrentTime(getCurrentTime());
+  //   }, 1000);
+
+  //   return `${hh} : ${mm} : ${ss}`;
+  // }
+
+  // getCurrentPosition
+  // navigator.geolocation.getCurrentPosition(res, rej, option).then(res => console.log(res))
+  let permissionDenied;
+
+  useEffect(() => {
+    navigator.geolocation
+      ? navigator.geolocation.getCurrentPosition((position) =>
+          searchCoords(position.coords.latitude, position.coords.longitude)
+        )
+      : permissionDenied = true;
+  }, []);
+
+  const searchCoords = async (lat, lon) => {
+    const coordsData = await fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&APPID=${apiKey}`
+    );
+
+    const data = await coordsData.json();
+    setCurrentData(data);
+    console.log(data);
+  };
+
+  const refreshClock = () => {
+    setCurrentTime(new Date());
+  };
+
+  useEffect(() => {
+    const timerId = setInterval(refreshClock, 1000);
+    return function cleanup() {
+      clearInterval(timerId);
+    };
+  }, []);
 
   return (
     <>
       <div className='container'>
         <div className='innerContainer'>
-          <h1>WindBuddy</h1>
+          <div>
+            <h1>WindBuddy</h1>
+          </div>
           <div className='searchBar'>
             <input
               className='searchInput'
@@ -91,7 +150,7 @@ const App = () => {
                   className='weather-icon'
                 />
               </span>
-              <span className="cityTemp">
+              <span className='cityTemp'>
                 <h2>{findTemp(apiData.main?.temp)} °C</h2>
                 <h2>{apiData.weather && apiData.weather[0]?.description}</h2>
               </span>
@@ -112,14 +171,44 @@ const App = () => {
                 <span>Visibility</span> <b>{apiData.visibility} mi</b>
               </h3>
             </div>
-            <div className='localtime'>
-              <h2>
-                <span>Date</span> <b>{currentDate}</b>
-              </h2>
-              <h2>
-                <span>Loaded Time</span> <b>{currentTime}</b>
-              </h2>
-            </div>
+
+            {permissionDenied ? alert("You have disabled location service. Allow 'This APP' to access your location. Your current location will be used for calculating Real time weather") && (
+              <div className="localtime" style={{
+                display: flex,
+                alignItems: "center",
+                justifyContent: "center"
+              }}>
+                <p>location permission denied</p>
+              </div>
+            ) : (
+              <div className='localtime'>
+                <div>
+                  <h2>
+                    <span>Your Location :</span>{" "}
+                    <b>
+                      {currentData.name}, {currentData.sys?.country}
+                    </b>
+                  </h2>
+                  <h2>
+                    <span>Temperature :</span>{" "}
+                    <b>
+                      {currentData.main?.temp} °C (
+                      {currentData.weather &&
+                        currentData.weather[0]?.description}
+                      )
+                    </b>
+                  </h2>
+                  <h2>
+                    <span>Date :</span> <b>{currentDate}</b>
+                  </h2>
+                  <h2>
+                    <span>Time :</span>{" "}
+                    <b>{currentTime.toLocaleTimeString()}</b>
+                  </h2>
+                </div>
+                <p>---Info. based on your location---</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
