@@ -88,7 +88,7 @@ const App = () => {
       ? navigator.geolocation.getCurrentPosition((position) =>
           searchCoords(position.coords.latitude, position.coords.longitude)
         )
-      : permissionDenied = true;
+      : (permissionDenied = true);
   }, []);
 
   const searchCoords = async (lat, lon) => {
@@ -172,14 +172,21 @@ const App = () => {
               </h3>
             </div>
 
-            {permissionDenied ? alert("You have disabled location service. Allow 'This APP' to access your location. Your current location will be used for calculating Real time weather") && (
-              <div className="localtime" style={{
-                display: flex,
-                alignItems: "center",
-                justifyContent: "center"
-              }}>
-                <p>location permission denied</p>
-              </div>
+            {permissionDenied ? (
+              alert(
+                "You have disabled location service. Allow 'This APP' to access your location. Your current location will be used for calculating Real time weather"
+              ) && (
+                <div
+                  className='localtime'
+                  style={{
+                    display: flex,
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <p>location permission denied</p>
+                </div>
+              )
             ) : (
               <div className='localtime'>
                 <div>
@@ -210,6 +217,68 @@ const App = () => {
               </div>
             )}
           </div>
+        </div>
+        <div
+          style={{
+            marginTop: "30px",
+            padding: "10px 30px",
+            backgroundColor: "rgba(2, 14, 25, 0.564)",
+            borderRadius: "10px",
+            width: "1100px",
+            boxShadow: "0 8px 32px 0 rgba(193, 208, 227, 0.655)",
+          }}
+        >
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: "20px",
+              color: "white",
+            }}
+          >
+            Developed by{" "}
+            <a
+              style={{
+                color: "#ff8400",
+                textDecoration: "none",
+              }} 
+              href='https://www.linkedin.com/in/anmol-kumar-a7593125b/' 
+              target="_blank"
+            >
+              @Anmol Kumar
+            </a>
+          </p>
+          <p
+            style={{
+              display: "flex",
+              gap: "20px",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: "16px",
+            }}
+          >
+            <a
+              style={{
+                color: "#ff8400",
+                textDecoration: "none",
+                transition: "0.2s all"
+              }}
+               
+              href='https://github.com/Anmol8611/windbuddy'
+              target="_blank"
+            >
+              Github
+            </a>{" "}
+            <a
+              style={{
+                color: "#ff8400",
+                textDecoration: "none",
+              }} 
+              href='https://twitter.com/Anmol_kr_twt'
+              target="_blank"
+            >
+              Twitter
+            </a>
+          </p>
         </div>
       </div>
     </>

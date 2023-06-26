@@ -26,7 +26,7 @@ Screenshot of the app
 ## Setup
 
 1. Clone the repository:
-   git clone https://github.com/your-username/weather-app.git
+   git clone https://github.com/Anmol8611/windbuddy.git
 
 2. Navigate to the project directory:
    cd weather-app
