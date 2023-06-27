@@ -17,11 +17,22 @@ const App = () => {
 
   // console.log(apiData);
 
+  // preLoader
+  const [loading, setLoading] = useState(false);
+  // useEffect(()=>{
+  //   setLoading(true);
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // },[])
+
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const res = await fetch(apiUrl);
       const data = await res.json();
       setApiData(data);
+      setLoading(false);
     };
 
     fetchData();
@@ -81,14 +92,17 @@ const App = () => {
 
   // getCurrentPosition
   // navigator.geolocation.getCurrentPosition(res, rej, option).then(res => console.log(res))
-  let permissionDenied;
+  const [permission, setPermission] = useState(false);
 
   useEffect(() => {
-    navigator.geolocation
-      ? navigator.geolocation.getCurrentPosition((position) =>
-          searchCoords(position.coords.latitude, position.coords.longitude)
-        )
-      : (permissionDenied = true);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        searchCoords(position.coords.latitude, position.coords.longitude);
+        setPermission(true);
+      });
+    } else {
+      setPermission(false);
+    }
   }, []);
 
   const searchCoords = async (lat, lon) => {
@@ -112,149 +126,153 @@ const App = () => {
     };
   }, []);
 
-  // preLoader
-  const [loading, setLoading] = useState(false);
-  useEffect(()=>{
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  },[])
-
   return (
     <>
       <div className='container'>
-        {
-          loading ? (
-            <div className="innerContainer" style={{
+        {loading ? (
+          <div
+            className='innerContainer'
+            style={{
               display: "flex",
               flexDirection: "column",
-              justifyContent:"center",
-              alignItems:"center"
-            }}>
-              <div className="loaderGif">
-              </div>
-              <h3 style={{ 
-                color:"#ff8400",
-                fontWeight:"300",
-                fontSize:"10px",
-                textAlign:"center",
-                marginTop:"20px"
-               }}>
-                Your current location wil be displayed on the App <br></br> & used
-                for calculating Real time weather.
-              </h3>
-              <h4 style={{
-                color:"#ff8800"
-              }}>--- Okk Darling? ---</h4>
-            </div>
-          ) : (
-            <div className='innerContainer'>
-          <div>
-            <h1>WindBuddy</h1>
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div className='loaderGif'></div>
+            <h3
+              style={{
+                color: "#ff8400",
+                fontWeight: "300",
+                fontSize: "10px",
+                textAlign: "center",
+                marginTop: "20px",
+              }}
+            >
+              Your current location wil be displayed on the App <br></br> & used
+              for calculating Real time weather.
+            </h3>
+            <h4
+              style={{
+                color: "#ff8800",
+              }}
+            >
+              --- Okk Darling? ---
+            </h4>
           </div>
-          <div className='searchBar'>
-            <input
-              className='searchInput'
-              id='searchInput'
-              type='text'
-              placeholder='Enter the CityName'
-              onChange={inputHandler}
-              value={inputState}
-            />
-            <BsSearch
-              className='searchIcon'
-              htmlFor='searchInput'
-              size={"25px"}
-              onClick={() => setSearchState(inputState)}
-            />
-          </div>
-          <div className='CityContainer'>
+        ) : (
+          <div className='innerContainer'>
             <div>
-              <h1>{apiData.name}</h1>
-              <h2>{apiData.sys?.country}</h2>
+              <h1>WindBuddy</h1>
             </div>
-            <div className='cityInnerDiv'>
-              <span>
-                <img
-                  src={`http://openweathermap.org/img/w/${
-                    apiData.weather && apiData.weather[0].icon
-                  }.png`}
-                  alt='weather status icon'
-                  className='weather-icon'
-                />
-              </span>
-              <span className='cityTemp'>
-                <h2>{findTemp(apiData.main?.temp)} °C</h2>
-                <h2>{apiData.weather && apiData.weather[0]?.description}</h2>
-              </span>
+            <div className='searchBar'>
+              <input
+                className='searchInput'
+                id='searchInput'
+                type='text'
+                placeholder='Enter the CityName'
+                onChange={inputHandler}
+                value={inputState}
+              />
+              <BsSearch
+                className='searchIcon'
+                htmlFor='searchInput'
+                size={"25px"}
+                onClick={() => setSearchState(inputState)}
+              />
             </div>
-          </div>
-          <div className='weatherInfo'>
-            <div className='info'>
-              <h3>
-                <span>Pressure</span> <b>{apiData.main?.pressure} hPa</b>
-              </h3>
-              <h3>
-                <span>Humidity</span> <b>{apiData.main?.humidity} %</b>
-              </h3>
-              <h3>
-                <span>WindSpeed</span> <b>{apiData.wind?.speed} Km/h</b>
-              </h3>
-              <h3>
-                <span>Visibility</span> <b>{apiData.visibility} mi</b>
-              </h3>
+            <div className='CityContainer'>
+              <div>
+                <h1>{apiData.name}</h1>
+                <h2>{apiData.sys?.country}</h2>
+              </div>
+              <div className='cityInnerDiv'>
+                <span>
+                  <img
+                    src={`http://openweathermap.org/img/w/${
+                      apiData.weather && apiData.weather[0].icon
+                    }.png`}
+                    alt='weather status icon'
+                    className='weather-icon'
+                  />
+                </span>
+                <span className='cityTemp'>
+                  <h2>{findTemp(apiData.main?.temp)} °C</h2>
+                  <h2>{apiData.weather && apiData.weather[0]?.description}</h2>
+                </span>
+              </div>
             </div>
+            <div className='weatherInfo'>
+              <div className='info'>
+                <h3>
+                  <span>Pressure</span> <b>{apiData.main?.pressure} hPa</b>
+                </h3>
+                <h3>
+                  <span>Humidity</span> <b>{apiData.main?.humidity} %</b>
+                </h3>
+                <h3>
+                  <span>WindSpeed</span> <b>{apiData.wind?.speed} Km/h</b>
+                </h3>
+                <h3>
+                  <span>Visibility</span> <b>{apiData.visibility} mi</b>
+                </h3>
+              </div>
 
-            {permissionDenied ? (
-              alert(
-                "You have disabled location service. Allow 'This APP' to access your location. Your current location will be used for calculating Real time weather"
-              ) && (
+              {permission === false ? (
                 <div
                   className='localtime'
                   style={{
-                    display: flex,
+                    display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <p>location permission denied</p>
+                  <p
+                    style={{
+                      color: "#c2b7b1",
+                      fontSize: "16px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    --- Geolocation not available ---
+                  </p>
                 </div>
-              )
-            ) : (
-              <div className='localtime'>
-                <div>
-                  <h2>
-                    <span>Your Location :</span>{" "}
-                    <b>
-                      {currentData.name}, {currentData.sys?.country}
-                    </b>
-                  </h2>
-                  <h2>
-                    <span>Temperature :</span>{" "}
-                    <b>
-                      {currentData.main?.temp} °C (
-                      {currentData.weather &&
-                        currentData.weather[0]?.description}
-                      )
-                    </b>
-                  </h2>
-                  <h2>
-                    <span>Date :</span> <b>{currentDate}</b>
-                  </h2>
-                  <h2>
-                    <span>Time :</span>{" "}
-                    <b>{currentTime.toLocaleTimeString()}</b>
-                  </h2>
+              ) : (
+                <div className='localtime'>
+                  <div>
+                    <h2>
+                      <span>Your Location :</span>{" "}
+                      <b>
+                        {currentData.name}, {currentData.sys?.country}
+                      </b>
+                    </h2>
+                    <h2>
+                      <span>Temperature :</span>{" "}
+                      <b>
+                        {currentData.main?.temp} °C (
+                        {currentData.weather &&
+                          currentData.weather[0]?.description}
+                        )
+                      </b>
+                    </h2>
+                    <h2>
+                      <span>Date :</span> <b>{currentDate}</b>
+                    </h2>
+                    <h2>
+                      <span>Time :</span>{" "}
+                      <b>{currentTime.toLocaleTimeString()}</b>
+                    </h2>
+                  </div>
+                  <p>
+                    ---Your current location is being displayed on the App{" "}
+                    <br></br> & used for calculating Real time weather.---
+                  </p>
                 </div>
-                <p>---Info. based on your Browser's location---</p>
-              </div>
-            )}
+              )}
+            </div>
           </div>
-        </div>
-          )
-        }
-        
+        )}
+
         <div
           style={{
             marginTop: "30px",
@@ -277,9 +295,9 @@ const App = () => {
               style={{
                 color: "#ff8400",
                 textDecoration: "none",
-              }} 
-              href='https://www.linkedin.com/in/anmol-kumar-a7593125b/' 
-              target="_blank"
+              }}
+              href='https://www.linkedin.com/in/anmol-kumar-a7593125b/'
+              target='_blank'
             >
               @Anmol Kumar
             </a>
@@ -297,11 +315,10 @@ const App = () => {
               style={{
                 color: "#ff8400",
                 textDecoration: "none",
-                transition: "0.2s all"
+                transition: "0.2s all",
               }}
-               
               href='https://github.com/Anmol8611/windbuddy'
-              target="_blank"
+              target='_blank'
             >
               Github
             </a>{" "}
@@ -309,9 +326,9 @@ const App = () => {
               style={{
                 color: "#ff8400",
                 textDecoration: "none",
-              }} 
+              }}
               href='https://twitter.com/Anmol_kr_twt'
-              target="_blank"
+              target='_blank'
             >
               Twitter
             </a>
