@@ -112,10 +112,44 @@ const App = () => {
     };
   }, []);
 
+  // preLoader
+  const [loading, setLoading] = useState(false);
+  useEffect(()=>{
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  },[])
+
   return (
     <>
       <div className='container'>
-        <div className='innerContainer'>
+        {
+          loading ? (
+            <div className="innerContainer" style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent:"center",
+              alignItems:"center"
+            }}>
+              <div className="loaderGif">
+              </div>
+              <h3 style={{ 
+                color:"#ff8400",
+                fontWeight:"300",
+                fontSize:"10px",
+                textAlign:"center",
+                marginTop:"20px"
+               }}>
+                Your current location wil be displayed on the App <br></br> & used
+                for calculating Real time weather.
+              </h3>
+              <h4 style={{
+                color:"#ff8800"
+              }}>--- Okk Darling? ---</h4>
+            </div>
+          ) : (
+            <div className='innerContainer'>
           <div>
             <h1>WindBuddy</h1>
           </div>
@@ -213,16 +247,19 @@ const App = () => {
                     <b>{currentTime.toLocaleTimeString()}</b>
                   </h2>
                 </div>
-                <p>---Info. based on your location---</p>
+                <p>---Info. based on your Browser's location---</p>
               </div>
             )}
           </div>
         </div>
+          )
+        }
+        
         <div
           style={{
             marginTop: "30px",
             padding: "10px 30px",
-            backgroundColor: "rgba(2, 14, 25, 0.564)",
+            backgroundColor: "#020b13d5",
             borderRadius: "10px",
             width: "1100px",
             boxShadow: "0 8px 32px 0 rgba(193, 208, 227, 0.655)",

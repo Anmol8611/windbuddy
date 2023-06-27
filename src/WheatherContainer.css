@@ -12,9 +12,9 @@
 }
 
 .innerContainer {
-  background: rgba(34, 33, 33, 0.399);
+  background: rgba(13, 21, 44, 0.74);
   box-shadow: 0 8px 32px 0 rgba(193, 208, 227, 0.655);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
   border-radius: 10px;
   border: 1px solid rgba(117, 136, 154, 0.18);
   height: 650px;
@@ -106,8 +106,9 @@
     background-position: center;
     min-width: 450px;
     min-height: 220px;
-    border: 2px solid #000000;
+    border: 2px solid #001a33;
     border-radius: 7px;
+    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.655);
     padding: 15px 30px;
 }
 
@@ -125,6 +126,16 @@
     text-align: center;
     font-size: 10px;
     color: #ff8400;
+}
+
+/* loader */
+.loaderGif {
+    height: 250px;
+    width: 250px;
+    background:
+    url("https://www.animatedimages.org/data/media/148/animated-weather-image-0077.gif") center
+    no-repeat;;
+    background-size: 250px;
 }
 
 @media screen and (max-width: 320px) and (max-height: 480px) {
