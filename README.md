@@ -21,7 +21,7 @@ A simple weather application built with ReactJS that provides current weather in
 
 Screenshot of the app
 
-![Weather App Screenshot](./Windbuddy.png)
+![Weather App Screenshot](./windbuddy.png)
 
 ## Setup
 
