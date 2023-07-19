@@ -112,7 +112,7 @@ const App = () => {
 
     const data = await coordsData.json();
     setCurrentData(data);
-    console.log(data);
+    // console.log(data);
   };
 
   const refreshClock = () => {
