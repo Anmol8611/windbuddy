@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import "./WheatherContainer.css";
-import { BsSearch } from "react-icons/bs";
+import { GiLips } from "react-icons/gi";
 // const apiKey = process.env.REACT_APP_API_KEY;
 
 const App = () => {
   const [apiData, setApiData] = useState({});
-  const [inputState, setInputState] = useState("Ranchi");
+  const [inputState, setInputState] = useState("");
   const [searchState, setSearchState] = useState("Ranchi");
 
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -27,8 +27,8 @@ const App = () => {
   // },[])
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
-      setLoading(true);
       const res = await fetch(apiUrl);
       const data = await res.json();
       setApiData(data);
@@ -174,7 +174,7 @@ const App = () => {
                 onChange={inputHandler}
                 value={inputState}
               />
-              <BsSearch
+              <GiLips
                 className='searchIcon'
                 htmlFor='searchInput'
                 size={"25px"}
