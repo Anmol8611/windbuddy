@@ -130,10 +130,10 @@
 
 /* loader */
 .loaderGif {
-    height: 250px;
-    width: 250px;
+    height: 150px;
+    width: 150px;
     background:
-    url("https://media.tenor.com/1zUYT3BN2tYAAAAj/skirt-bunny-girl.gif") center
+    url("https://www.animatedimages.org/data/media/148/animated-weather-image-0077.gif") center
     no-repeat;;
     background-size: contain;
 }

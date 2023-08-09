@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import "./WheatherContainer.css";
-import { GiLips } from "react-icons/gi";
+import { FaSearch } from "react-icons/fa";
 // const apiKey = process.env.REACT_APP_API_KEY;
 
 const App = () => {
@@ -174,7 +174,7 @@ const App = () => {
                 onChange={inputHandler}
                 value={inputState}
               />
-              <GiLips
+              <FaSearch
                 className='searchIcon'
                 htmlFor='searchInput'
                 size={"25px"}
