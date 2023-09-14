@@ -327,7 +327,7 @@ const App = () => {
                 color: "#ff8400",
                 textDecoration: "none",
               }}
-              href='https://twitter.com/Anmol_kr_twt'
+              href='https://twitter.com/AnmolDotX'
               target='_blank'
             >
               Twitter
